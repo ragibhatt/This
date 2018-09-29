@@ -6,12 +6,13 @@
     android:background="@drawable/pink">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/Reg_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="47dp"
+        android:onClick="createAccount"
         android:text="SIGN ME UP"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
@@ -27,7 +28,7 @@
         android:textColor="@color/colorPrimaryDark"/>
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/Reg_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -42,22 +43,22 @@
         android:textColor="@color/colorPrimaryDark"/>
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/Reg_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/editText"
+        android:layout_alignStart="@+id/Reg_name"
         android:layout_alignParentTop="true"
         android:layout_marginTop="200dp"
         android:ems="10"
         android:hint="EMAIL"
-        android:textColorHint="@color/colorPrimaryDark"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColorHint="@color/colorPrimaryDark" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/Reg_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -65,10 +66,18 @@
         android:layout_marginBottom="184dp"
         android:ems="10"
         android:hint="PASSWORD"
-        android:textColorHint="@color/colorPrimaryDark"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColorHint="@color/colorPrimaryDark" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Reg_name"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
