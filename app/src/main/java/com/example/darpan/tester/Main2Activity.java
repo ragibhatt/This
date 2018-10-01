@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -87,5 +88,23 @@ public class Main2Activity extends AppCompatActivity {
                         Log.d(TAG,e.toString());
                     }
                 });
+        Map<String,Object> addFirstUser=new HashMap<>();
+        addFirstUser.put("numOfUsers",1);
+        addFirstUser.put("user1","rasheedulla97@gmail.com");
+        DocumentReference dr=db.collection("Register").document(email.getText().toString());
+        dr.collection("contacts").document("list1").set(addFirstUser)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(Main2Activity.this, "User added", Toast.LENGTH_SHORT).show();
+                    }
+                })
+               .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Main2Activity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
+//

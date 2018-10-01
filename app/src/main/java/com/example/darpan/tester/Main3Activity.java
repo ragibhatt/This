@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,8 +46,10 @@ public class Main3Activity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             Log.d(TAG, "Welcome back!");
                             progressBar2.setVisibility(View.GONE);
-                            Intent i=new Intent(Main3Activity.this,Main4Activity.class);
+                            Intent i=new Intent(Main3Activity.this,Main5Activity.class);
                             startActivity(i);
+                        }else {
+                            Toast.makeText(Main3Activity.this, "cannot login", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

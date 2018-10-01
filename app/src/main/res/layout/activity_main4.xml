@@ -7,15 +7,24 @@
     android:clipToPadding="false"
     android:focusableInTouchMode="true"
     android:background="@drawable/pink"
-    tools:context=".MainActivity">
+    tools:context=".Main4Activity">
 
-    <ListView
-        android:layout_width="match_parent"
+   <!-- <ListView
         android:id="@+id/messages_view"
-        android:layout_weight="2"
-        android:divider="#fff"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:layout_weight="2"
+        android:divider="#fff" />  -->
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="460dp">
+
+        <TextView
+            android:id="@+id/chat2"
+            android:layout_width="match_parent"
+            android:layout_height="460dp"
+            android:textSize="22sp" />
+    </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -24,7 +33,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/Reg_name"
+            android:id="@+id/msg_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -36,7 +45,7 @@
 
 
         <ImageButton
-            android:id="@+id/img"
+            android:id="@+id/img_btn"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
