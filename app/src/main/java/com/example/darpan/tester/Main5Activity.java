@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,6 +31,8 @@ public class Main5Activity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userEmail=user.getEmail();
     ListView contactList;
+    ProgressBar progressBar3;
+
     //String[] contacts;
     //String [] contactsss={"asdsdsad","asdasd","zxcxcczx","qwee"};
     //attach contect here
@@ -39,6 +42,8 @@ public class Main5Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main5);
+        progressBar3=findViewById(R.id.progressBar3);
+        progressBar3.setVisibility(View.VISIBLE);
 
         docref.collection("contacts").document("list1").get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -58,6 +63,7 @@ public class Main5Activity extends AppCompatActivity {
                             }
                             final ArrayAdapter<String> adapter = new ArrayAdapter<>(Main5Activity.this, android.R.layout.simple_list_item_1,list);
                             contactList = findViewById(R.id.contacts_list);
+                            progressBar3.setVisibility(View.GONE);
                             contactList.setAdapter(adapter);
                             contactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override

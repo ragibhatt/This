@@ -1,6 +1,9 @@
 package com.example.darpan.tester;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,10 +47,12 @@ public class Main4Activity extends AppCompatActivity {
     TextView chat2;
     EditText msg;
     ImageButton send;
+    boolean flag=false;
     DocumentReference docref = db.collection("Register").document(userID);
     Long chatindex;
-    final ArrayList<String> chatlist=new ArrayList<>();
-    String[] chatlistt = {"asdsdasadsdsadsd", "dasdsdadasddf", "sedfghfg"};
+
+    //final ArrayList<String> chatlist=new ArrayList<>();
+    //String[] chatlistt = {"asdsdasadsdsadsd", "dasdsdadasddf", "sedfghfg"};
     //Timestamp timestamp;
     //int date;
 
@@ -56,7 +62,46 @@ public class Main4Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main4);
         msg = findViewById(R.id.msg_name);
         send = findViewById(R.id.img_btn);
-        chat2=findViewById(R.id.chat2);
+        Intent i = getIntent();
+        final String receiverID = i.getStringExtra("userID");
+        docref.collection(receiverID).document("today").
+                addSnapshotListener(Main4Activity.this, new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        if (documentSnapshot.exists()) {
+                            Toast.makeText(Main4Activity.this, "Snapshot Listener running" + chatindex, Toast.LENGTH_SHORT).show();
+                            //StringBuilder texts = new StringBuilder();
+                           if (flag){
+                               Long tempchatindex;
+                               tempchatindex=documentSnapshot.getLong("Noof_msg");
+                               String message=documentSnapshot.getString("message"+tempchatindex);
+                               String type=documentSnapshot.getString("type"+tempchatindex);
+                               final LinearLayout textarea;
+                               textarea=findViewById(R.id.textarea);
+                               final TextView tv=new TextView(Main4Activity.this);
+                               tv.setText(type+": "+message);
+                               tv.setPadding(6,10,6,10);
+                               tv.setTextSize(22);
+                               ShapeDrawable sd = new ShapeDrawable(new OvalShape());
+                               sd.getPaint().setColor(Color.WHITE);
+
+                               tv.setBackground(sd);
+                               textarea.addView(tv);
+                           }
+
+                            //chat2.setText(texts);
+                            //final ArrayAdapter<String> adapter=new ArrayAdapter<>(Main4Activity.this,android.R.layout.simple_list_item_2,chatlistt);
+
+                            //chat.setAdapter(adapter);
+
+                        } else {
+                            Toast.makeText(Main4Activity.this, "Snapshop listener error", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
+        //chat2=findViewById(R.id.chat2);
     }
 
     @Override
@@ -72,35 +117,21 @@ public class Main4Activity extends AppCompatActivity {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
                             chatindex = documentSnapshot.getLong("Noof_msg");
+                            final LinearLayout textarea;
+                            textarea=findViewById(R.id.textarea);
+                            for (int i=1;i<=chatindex;i++){
+                                String message=documentSnapshot.getString("message"+i);
+                                String type=documentSnapshot.getString("type"+i);
+                                TextView tv=new TextView(Main4Activity.this);
+                                tv.setPadding(6,10,6,10);
+                                tv.setText(type+": "+message);
+                                tv.setTextSize(22);
+                                textarea.addView(tv);
+                                //Toast.makeText(Main4Activity.this, type+":"+message, Toast.LENGTH_SHORT).show();
+                                //chatlist.add(type+":"+message);
+                                // texts.append(type+":"+message+"\n\n");
+                            }
 
-
-                            docref.collection(receiverID).document("today").
-                                    addSnapshotListener(Main4Activity.this, new EventListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                                            if (documentSnapshot.exists()) {
-                                                Toast.makeText(Main4Activity.this, "Snapshot Listener running" + chatindex, Toast.LENGTH_SHORT).show();
-                                                StringBuilder texts = new StringBuilder();
-
-                                                for (int i=1;i<=chatindex;i++){
-                                                        String message=documentSnapshot.getString("message"+i);
-                                                        String type=documentSnapshot.getString("type"+i);
-                                                         //Toast.makeText(Main4Activity.this, type+":"+message, Toast.LENGTH_SHORT).show();
-                                                        chatlist.add(type+":"+message);
-                                                        texts.append(type+":"+message+"\n\n");
-                                                     }
-                                                chat2.setText(texts);
-                                                //final ArrayAdapter<String> adapter=new ArrayAdapter<>(Main4Activity.this,android.R.layout.simple_list_item_2,chatlistt);
-
-
-                                                //chat.setAdapter(adapter);
-
-                                            } else {
-                                                Toast.makeText(Main4Activity.this, "Snapshop listener error", Toast.LENGTH_SHORT).show();
-                                            }
-
-                                        }
-                                    });
 
                             Toast.makeText(Main4Activity.this, "Loading Existing chats you" + chatindex, Toast.LENGTH_SHORT).show();
                         } else {
@@ -149,7 +180,7 @@ public class Main4Activity extends AppCompatActivity {
         final String receiverID = i.getStringExtra("userID");
         final DocumentReference docref1 = db.collection("Register").document(receiverID);
         String msgvar = msg.getText().toString().trim();
-
+        flag=true;
         chatindex++;
         Map<String, Object> postMe = new HashMap<>();
         postMe.put("Noof_msg", chatindex);
@@ -187,6 +218,8 @@ public class Main4Activity extends AppCompatActivity {
                         Toast.makeText(Main4Activity.this, "msg not sent to his/her database", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
 
 
     }
